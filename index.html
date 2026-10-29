@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard Schedule Proyek</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg1:#eaf0f7;--bg2:#dde7f3;--glass:rgba(255,255,255,.62);--bd:rgba(255,255,255,.85);--tx:#22313f;--mu:#6c7d92;--ac:#5f8fe0;--ok:#4fae93;--wa:#d6a243;--kr:#d0726c;--sh:0 12px 34px rgba(70,100,140,.14);--in:rgba(255,255,255,.7)}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg1:#0f1824;--bg2:#16283d;--glass:rgba(34,52,76,.55);--bd:rgba(255,255,255,.09);--tx:#e4ecf6;--mu:#8fa3bd;--ac:#7ba8ff;--ok:#5fc3a6;--wa:#e0b25c;--kr:#df827c;--sh:0 12px 34px rgba(0,0,0,.35);--in:rgba(15,24,36,.55)}}
+:root[data-theme="dark"]{--bg1:#0f1824;--bg2:#16283d;--glass:rgba(34,52,76,.55);--bd:rgba(255,255,255,.09);--tx:#e4ecf6;--mu:#8fa3bd;--ac:#7ba8ff;--ok:#5fc3a6;--wa:#e0b25c;--kr:#df827c;--sh:0 12px 34px rgba(0,0,0,.35);--in:rgba(15,24,36,.55)}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:"Segoe UI",system-ui,-apple-system,sans-serif;color:var(--tx);background:radial-gradient(900px 500px at 10% -10%,var(--bg2),transparent),radial-gradient(800px 500px at 100% 0,rgba(95,143,224,.16),transparent),var(--bg1);background-attachment:fixed;min-height:100vh;padding:20px;line-height:1.45}
+.wrap{max-width:1180px;margin:0 auto}
+header{display:flex;flex-wrap:wrap;gap:14px;justify-content:space-between;align-items:center;margin-bottom:16px}
+h1{font-size:22px;margin:0;font-weight:600;letter-spacing:.3px}h1 small{display:block;font-size:12px;color:var(--mu);font-weight:400;letter-spacing:1.5px;text-transform:uppercase;margin-top:2px}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+select,input,textarea,button{font:inherit;color:var(--tx)}
+select,input,textarea{background:var(--in);border:1px solid var(--bd);border-radius:14px;padding:9px 12px;outline:none;backdrop-filter:blur(8px)}
+select:focus,input:focus,textarea:focus{border-color:var(--ac)}
+button{background:var(--glass);border:1px solid var(--bd);border-radius:14px;padding:9px 14px;cursor:pointer;backdrop-filter:blur(8px);box-shadow:var(--sh)}
+button:hover{border-color:var(--ac)}button.pri{background:linear-gradient(135deg,var(--ac),#7fb0ee);color:#fff;border:0}
+.card{background:var(--glass);border:1px solid var(--bd);border-radius:26px;padding:18px 20px;box-shadow:var(--sh);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px)}
+.card h2{font-size:12px;letter-spacing:1.6px;text-transform:uppercase;color:var(--mu);font-weight:600;margin:0 0 12px}
+.grid{display:grid;gap:14px;grid-template-columns:repeat(12,1fr);margin-bottom:14px}
+.c12{grid-column:span 12}.c8{grid-column:span 8}.c7{grid-column:span 7}.c6{grid-column:span 6}.c5{grid-column:span 5}.c4{grid-column:span 4}
+@media(max-width:860px){.c8,.c7,.c6,.c5,.c4{grid-column:span 12}}
+#strip{display:flex;gap:10px;overflow-x:auto;padding-bottom:4px;margin-bottom:14px}
+.chip{min-width:200px;flex:1;cursor:pointer;padding:12px 16px;border-radius:20px;background:var(--glass);border:1px solid var(--bd);backdrop-filter:blur(12px)}
+.chip.on{border-color:var(--ac);box-shadow:0 0 0 2px rgba(95,143,224,.25)}
+.chip b{display:block;font-size:13px;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.chip span{font-size:12px;color:var(--mu)}
+.dot{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:6px}
+.hero{display:flex;flex-wrap:wrap;gap:22px;align-items:center}
+.orb{width:120px;height:120px;border-radius:50%;display:grid;place-items:center;text-align:center;font-weight:700;letter-spacing:2px;font-size:15px;color:#fff;flex:none}
+.kpis{display:flex;gap:22px;flex-wrap:wrap;flex:1}.kpi{min-width:90px}.kpi small{display:block;color:var(--mu);font-size:11px;letter-spacing:1.2px;text-transform:uppercase}.kpi b{font-size:28px;font-weight:600}
+.ppl{min-width:210px;border-left:1px solid var(--bd);padding-left:20px}.ppl small{color:var(--mu);font-size:11px;letter-spacing:1.2px;text-transform:uppercase;display:block;margin-top:8px}.ppl small:first-child{margin-top:0}.ppl div{font-weight:600}
+.bar{height:14px;border-radius:99px;background:var(--in);overflow:hidden;border:1px solid var(--bd)}.bar i{display:block;height:100%;border-radius:99px;transition:width .6s}
+.row{margin-bottom:14px}.row .lb{display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px}.row .lb span{color:var(--mu)}
+.note{font-size:13px;padding:10px 14px;border-radius:16px;background:var(--in);border:1px solid var(--bd)}
+.cp{position:relative;padding-left:22px}.cp:before{content:"";position:absolute;left:6px;top:8px;bottom:8px;width:2px;background:linear-gradient(var(--ac),transparent);opacity:.5}
+.node{position:relative;padding:8px 0}.node:before{content:"";position:absolute;left:-20px;top:16px;width:10px;height:10px;border-radius:50%;background:var(--ac);box-shadow:0 0 0 4px rgba(95,143,224,.2)}
+.node .t{display:flex;justify-content:space-between;gap:8px;font-size:14px;font-weight:600}.node .s{font-size:12px;color:var(--mu);display:flex;justify-content:space-between;gap:8px}
+.node .bar{height:6px;margin-top:5px}
+.tag{font-size:11px;padding:2px 9px;border-radius:99px;background:var(--in);border:1px solid var(--bd);color:var(--mu);white-space:nowrap}
+.iss{display:flex;gap:12px;align-items:center;padding:9px 0;border-bottom:1px dashed var(--bd)}.iss:last-child{border:0}
+.rk{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;font-size:13px;font-weight:700;background:var(--in);border:1px solid var(--bd);flex:none}
+.iss .d{margin-left:auto;text-align:right;font-weight:600;white-space:nowrap}.iss .d small{display:block;color:var(--mu);font-weight:400;font-size:11px}
+svg text{fill:var(--mu);font-size:10px}
+#ov{position:fixed;inset:0;background:rgba(20,30,45,.45);backdrop-filter:blur(6px);display:none;align-items:flex-start;justify-content:center;overflow:auto;padding:24px;z-index:50}
+#ov.on{display:flex}.modal{width:min(760px,100%);background:var(--bg1);border:1px solid var(--bd);border-radius:28px;padding:22px;box-shadow:var(--sh)}
+.modal h3{margin:0 0 4px;font-weight:600}.modal p{margin:0 0 12px;font-size:12px;color:var(--mu)}
+.fg{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.fg label{font-size:12px;color:var(--mu);display:block}.fg input,.modal textarea{width:100%;margin-top:3px}.fg .w{grid-column:span 2}
+.modal textarea{min-height:110px;font-family:ui-monospace,Consolas,monospace;font-size:12px}
+.acts{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pg{display:grid;gap:20px;grid-template-columns:1.3fr 1fr;align-items:start}@media(max-width:860px){.pg{grid-template-columns:1fr}}
+.tb{width:100%;border-collapse:collapse;font-size:13px;margin-bottom:12px}.tb th{color:var(--mu);font-weight:500;text-align:left;font-size:11px;letter-spacing:1px;text-transform:uppercase}.tb td,.tb th{padding:5px 4px;border-bottom:1px dashed var(--bd)}
+.ir{display:grid;grid-template-columns:1.1fr 1.6fr 74px 34px;gap:6px;margin-bottom:4px}.ir select,.ir button{width:100%;padding:7px 9px;font-size:13px;box-shadow:none}.ik{margin-bottom:10px}.ik input{width:100%;padding:7px 10px;font-size:13px}
+@media(max-width:620px){.ir{grid-template-columns:1fr 1fr}}
+#sv{font-size:12px;color:var(--mu)}
+footer{text-align:center;font-size:12px;color:var(--mu);margin:18px 0 6px}
+</style></head><body><div class="wrap">
+<header>
+ <h1>Dashboard Schedule Proyek<small>Laporan Senin · Monitoring Lintasan Kritis</small></h1>
+ <div class="ctl">
+  <select id="pj" aria-label="Pilih proyek"></select>
+  <select id="wk" aria-label="Pilih tanggal update"></select>
+  <span id="sv"></span><button id="bEdit">✎ Edit Update</button><button id="bNewW" class="pri">+ Input Update</button>
+  <button id="bTheme" title="Ganti tema">◐</button>
+ </div>
+</header>
+<div id="strip"></div>
+<div class="grid"><div class="card c12"><div class="hero" id="hero"></div></div></div>
+<div class="grid">
+ <div class="card c7"><h2>Kurva S · Rencana vs Aktual</h2><div id="chart"></div></div>
+ <div class="card c5"><h2>Sisa Waktu vs Sisa Progress</h2><div id="tv"></div></div>
+</div>
+<div class="grid">
+ <div class="card c12"><h2>Produktivitas Bulanan · 3 Bulan ke Belakang &amp; 3 Bulan ke Depan</h2><div id="prod"></div></div>
+ <div class="card c6"><h2>Lintasan Kritis</h2><div class="cp" id="cp"></div></div>
+ <div class="card c6"><h2>Top 5 Kendala Teknis Lapangan</h2><div id="iss"></div></div>
+</div>
+<footer>Schedule health = yang terburuk dari (a) delta Kurva S: Aman ≥ −2%, Waspada −2% s.d. −5%, Kritis &lt; −5%, dan (b) kelayakan produktivitas = kebutuhan per bulan ÷ rata-rata 3 bulan terakhir: ≤ 1,0 Logis, ≤ 1,25 Perlu percepatan, &gt; 1,25 Waspada · Data contoh, ganti dengan data proyek Anda lewat “Input Update”.</footer>
+</div>
+
+<div id="ov"><div class="modal">
+ <h3 id="mt">Input Update</h3><p>Tanggal boleh ditulis dd-mm-yyyy, dd/mm/yyyy atau yyyy-mm-dd. Angka boleh memakai koma (4,5). Data yang tidak valid akan ditolak dengan pesan, tidak diubah otomatis.</p>
+ <div class="fg">
+  <label class="w">Nama proyek<input id="fN"></label>
+  <label>PIC Scheduler<input id="fP"></label><label>Manager pengirim data<input id="fM"></label>
+  <label>Tanggal mulai kontrak<input id="fS" type="date"></label><label>Tanggal selesai kontrak<input id="fF" type="date"></label>
+  <label>Tanggal update (Senin)<input id="fD" type="date"></label><span></span>
+  <label>Progress rencana kumulatif (%)<input id="fPl" type="number" step="any" min="0" max="100"></label><label>Progress aktual kumulatif (%)<input id="fAc" type="number" step="any" min="0" max="100"></label>
+  <label class="w">Lintasan kritis — Nama task | Mulai (dd-mm-yyyy) | Selesai (dd-mm-yyyy) | Float (hari) | Progress (%)<textarea id="fC" placeholder="Fasade Depan | 19-10-2026 | 17-11-2026 | 0 | 0"></textarea></label>
+  <div class="w"><label>Kendala teknis lapangan · Kategori → Kendala → Dampak (hari kalender)</label><div id="fIss"></div><button type="button" id="bAddI">+ Tambah kendala</button></div>
+  <label class="w">Progress bulanan — Bulan (YYYY-MM) | Progress bulan tersebut (%) · hanya bulan yang sudah selesai (sebelum bulan tanggal update) yang dihitung · contoh: 2026-09 | 4,5<textarea id="fMo"></textarea></label>
+ </div>
+ <div class="acts">
+  <button class="pri" id="bSave">Simpan</button><button id="bNew">Proyek baru</button><button id="bDel">Hapus proyek</button>
+  <button id="bExp">Ekspor JSON</button><button id="bImp">Impor JSON</button><button id="bX" style="margin-left:auto">Tutup</button>
+ </div>
+ <input type="file" id="fileIn" accept=".json" hidden>
+</div></div>
+
+<script>
+const $=s=>document.querySelector(s),KEY="dash_sched_v1";
+const p2=n=>String(n).padStart(2,"0"),iso=d=>d.getFullYear()+"-"+p2(d.getMonth()+1)+"-"+p2(d.getDate());
+const D=i=>new Date(i+"T00:00:00"),add=(d,n)=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+n);
+const fmt=i=>D(i).toLocaleDateString("id-ID",{day:"numeric",month:"short",year:"numeric"});
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const num=v=>+(+v).toFixed(1),pf=v=>String(+(+v).toFixed(2));
+function mk(id,name,pic,mgr,start,fin,off,crit,iss){
+ const s=D(start),f=D(fin),last=D("2026-10-26"),tot=f-s,rep=[];
+ const L=t=>1/(1+Math.exp(-10*(t-.5))),n=t=>(L(t)-L(0))/(L(1)-L(0));let k=0;
+ for(let d=s;d<=last;d=add(d,7),k++){const t=(d-s)/tot,p=100*n(t),a=Math.max(0,p+off*Math.min(1,t*4)+Math.sin(k)*.6);
+  rep.push({date:iso(d),plan:num(p),actual:num(a),crit,iss});}
+ return{id,name,pic,mgr,start,fin,rep};}
+const seed=()=>[
+ mk("P1","Gedung Kantor Cabang Surabaya","Dewi Anggraini","Budi Santoso","2026-03-02","2027-03-01",-1,
+  [["Pekerjaan struktur lantai 4","2026-10-12","2026-11-23",0,45],["Pekerjaan atap & waterproofing","2026-11-24","2026-12-28",0,0],["Instalasi MEP shaft","2026-12-01","2027-01-18",3,0],["Finishing & commissioning","2027-01-19","2027-02-22",0,0]],
+  [["Faktor Eksternal","Keterbatasan Supply Material","Baja WF tertunda dari pabrik",9],["Faktor Eksternal","Cuaca / Bencana Alam","Hujan menghambat pengecoran lantai 4",5],["Faktor Owner","Approval Shop Drawing / Metode","Revisi gambar MEP",4],["Faktor Eksternal","Keterbatasan Resource Subkon / Mandor","Tukang bekisting kurang",3],["Faktor Internal","Pengadaan Material & Alat Procurement","Tower crane breakdown",2]]),
+ mk("P2","Jalan Akses Kawasan Industri","Rizky Pratama","Hendra Wijaya","2026-05-04","2027-04-26",-4.5,
+  [["Pembebasan lahan STA 2+400","2026-09-14","2026-11-16",-6,55],["Galian & timbunan STA 2+000–3+500","2026-11-02","2027-01-11",0,10],["Lapis pondasi agregat","2027-01-12","2027-02-22",0,0],["Pengaspalan AC-WC","2027-02-23","2027-03-29",2,0]],
+  [["Faktor Owner","Serah Terima Lahan / IMB","Lahan STA 2+400 belum bebas (warga)",14],["Faktor Eksternal","Pekerjaan Sebelumnya Belum Selesai","Pemindahan tiang PLN di trase",8],["Faktor Eksternal","Cuaca / Bencana Alam","Tanah lunak setelah hujan",6],["Faktor Eksternal","Keterbatasan Supply Material","Produksi AMP terbatas",3],["Faktor Eksternal","Pembatasan Waktu & Operasi Kerja","Izin area dumping terbatas jam",2]]),
+ mk("P3","Jembatan Kali Bekasi","Sari Wulandari","Agus Kurniawan","2026-01-05","2027-01-04",-9,
+  [["Pondasi bored pile P3","2026-09-01","2026-11-02",-12,70],["Pier head P2–P3","2026-11-03","2026-12-07",-8,0],["Erection girder","2026-12-08","2027-01-04",-5,0]],
+  [["Faktor Internal","Subkon / Mandor (Kontrak)","Gagal uji PDA bored pile P3",21],["Faktor Eksternal","Cuaca / Bencana Alam","Muka air tinggi, cofferdam bocor",12],["Faktor Eksternal","Keterbatasan Supply Material","Pengiriman girder tertunda",10],["Faktor Internal","Pengadaan Material & Alat Procurement","Crane 100T terlambat mobilisasi",7],["Faktor Internal","Subkon / Mandor (Kontrak)","Rework tulangan pier",4]])];
+let P,LSOK=true;try{P=JSON.parse(localStorage.getItem(KEY))}catch(e){LSOK=false}
+if(!Array.isArray(P)||!P.length)P=seed();
+const CM={Alat:"Faktor Internal",SDM:"Faktor Internal",Mutu:"Faktor Internal"},OC={"Material & Peralatan":"Faktor Internal","Tenaga Kerja & Metode":"Faktor Internal","Lapangan & Eksternal":"Faktor Eksternal"};
+const migI=x=>Array.isArray(x)&&x.length===3&&typeof x[2]==="number"?[CM[x[1]]||"Faktor Eksternal",x[0],"",Math.min(31,Math.max(1,x[2]))]:(Array.isArray(x)&&OC[x[0]]?[OC[x[0]],...x.slice(1)]:x);
+P.forEach(p=>p.rep.forEach(r=>{r.iss=(r.iss||[]).map(migI)}));
+const NOLS="<b style='color:var(--kr)'>⚠ Penyimpanan browser tidak aktif · gunakan Ekspor JSON agar data aman</b>";
+if(!LSOK)$("#sv").innerHTML=NOLS;
+const save=()=>{let ok=true;try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){ok=false}$("#sv").innerHTML=ok?"✓ Tersimpan "+new Date().toLocaleTimeString("id-ID",{hour:"2-digit",minute:"2-digit"}):NOLS};
+let cur=P[0].id,curD=null;
+const stat=d=>d>=-2?["AMAN","ok"]:d>=-5?["WASPADA","wa"]:["KRITIS","kr"];
+const proj=()=>P.find(p=>p.id===cur)||P[0];
+const lastRep=p=>p.rep[p.rep.length-1];
+function render(){
+ const p=proj();cur=p.id;p.rep.sort((a,b)=>a.date<b.date?-1:1);
+ if(!curD||!p.rep.find(r=>r.date===curD))curD=lastRep(p).date;
+ $("#pj").innerHTML=P.map(x=>`<option value="${x.id}" ${x.id===cur?"selected":""}>${esc(x.name)}</option>`).join("");
+ $("#wk").innerHTML=[...p.rep].reverse().map(r=>`<option value="${r.date}" ${r.date===curD?"selected":""}>Update ${fmt(r.date)}</option>`).join("");
+ $("#strip").innerHTML=P.map(x=>{const r=lastRep(x),d=r.actual-r.plan,[l,c]=analyze(x,r).final;
+  return`<div class="chip ${x.id===cur?"on":""}" data-id="${x.id}"><b>${esc(x.name)}</b><span><i class="dot" style="background:var(--${c})"></i>${l} · Δ ${d>=0?"+":""}${pf(d)}%</span></div>`}).join("");
+ const r=p.rep.find(r=>r.date===curD),d=r.actual-r.plan,A=analyze(p,r),[l,c]=A.final;
+ $("#hero").innerHTML=`<div class="orb" style="background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.55),var(--${c}) 55%);box-shadow:0 0 0 8px rgba(128,150,180,.12),0 0 34px var(--${c})"><div>${l}<br><small style="font-weight:400;letter-spacing:1px;font-size:11px">STATUS</small></div></div>
+ <div class="kpis"><div class="kpi"><small>Progress aktual</small><b>${pf(r.actual)}%</b></div><div class="kpi"><small>Rencana (Kurva S)</small><b>${pf(r.plan)}%</b></div>
+ <div class="kpi"><small>Delta vs rencana</small><b style="color:var(--${A.ds[1]})">${d>=0?"+":""}${pf(d)}%</b></div><div class="kpi"><small>Kelayakan sisa progress</small><b style="color:var(--${A.fe[1]});font-size:17px">${A.fe[0]}</b></div></div>
+ <div class="ppl"><small>PIC Scheduler</small><div>${esc(p.pic)}</div><small>Manager pengirim data</small><div>${esc(p.mgr)}</div><small>Tanggal update</small><div>${fmt(r.date)}</div></div>`;
+ // waktu vs progress
+ const tot=(D(p.fin)-D(p.start))/864e5,sisaH=A.sisaH,sw=Math.max(0,Math.min(100,sisaH/tot*100)),sp=100-r.actual;
+ const need=A.needM,avg=A.avgM;
+ const bad=sp>sw+0.5,gap=sp-sw;
+ $("#tv").innerHTML=`<div class="row"><div class="lb"><b>Waktu terpakai · ${(100-sw).toFixed(1)}%</b><span>sisa ${sisaH} hari (${sw.toFixed(1)}%)</span></div><div class="bar"><i style="width:${100-sw}%;background:linear-gradient(90deg,var(--ac),#8bb7f0)"></i></div></div>
+ <div class="row"><div class="lb"><b>Progress tercapai · ${(100-sp).toFixed(1)}%</b><span>sisa ${sp.toFixed(1)}%</span></div><div class="bar"><i style="width:${100-sp}%;background:linear-gradient(90deg,var(--${bad?"wa":"ok"}),var(--${bad?"kr":"ok"}))"></i></div></div>
+ <div class="note">Sisa hari = tanggal akhir proyek − tanggal update = <b>${fmt(p.fin)} − ${fmt(r.date)} = ${sisaH} hari</b>.<br>${bad?`Sisa progress melebihi sisa waktu sebesar <b>${gap.toFixed(1)}%</b>.`:`Sisa waktu lebih longgar <b>${(-gap).toFixed(1)}%</b> dari sisa progress.`}<br>${A.use.length?`Butuh <b>${f2(need)}%/bulan</b> (≈ ${f2(A.needW)}%/minggu) vs rata-rata ${A.use.length} bulan terakhir <b>${f2(avg)}%/bulan</b> → <b style="color:var(--${A.fe[1]})">${A.fe[0]}</b>.`:`Data produktivitas bulanan belum tersedia.`}</div>`;
+ // critical path
+ $("#cp").innerHTML=(r.crit||[]).map(t=>{const fl=+t[3],pr=+t[4]||0,col=fl<0?"kr":fl===0?"wa":"ok";
+  return`<div class="node"><div class="t"><span>${esc(t[0])}</span><span class="tag" style="color:var(--${col})">Float ${fl} hr</span></div><div class="s"><span>${fmt(t[1])} → ${fmt(t[2])}</span><span>${pr}%</span></div><div class="bar"><i style="width:${pr}%;background:var(--ac)"></i></div></div>`}).join("")||"<div class='note'>Belum ada data lintasan kritis.</div>";
+ // issues
+ const dmp=v=>v>30?">30 hari":v+" hari",is=[...(r.iss||[])].sort((a,b)=>b[3]-a[3]).slice(0,5);
+ $("#iss").innerHTML=is.map((x,k)=>`<div class="iss"><div class="rk">${k+1}</div><div style="min-width:0"><div style="font-weight:600;font-size:14px">${esc(x[1])}</div>${x[2]?`<div style="font-size:12px;color:var(--mu)">${esc(x[2])}</div>`:""}<span class="tag">${esc(x[0])}</span></div><div class="d">${dmp(x[3])}<small>dampak</small></div></div>`).join("")||"<div class='note'>Belum ada data kendala.</div>";
+ chart(p,r,c);prod(p,r,A);
+}
+const MS=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"],mlab=m=>MS[+m.slice(5)-1]+" "+m.slice(2,4),dim=m=>new Date(+m.slice(0,4),+m.slice(5),0).getDate(),f2=v=>isFinite(v)?v.toFixed(2):"∞",MD=30.4375;
+function monthly(p,r){
+ const rm=r.date.slice(0,7),man=p.monthly||{},out={},reps=p.rep.filter(q=>q.date<=r.date),ms=new Set(Object.keys(man));
+ reps.forEach(q=>ms.add(q.date.slice(0,7)));
+ [...ms].filter(m=>m<rm).sort().forEach(m=>{
+  if(man[m]!=null){out[m]={v:+man[m],src:"input"};return}
+  const inM=reps.filter(q=>q.date.slice(0,7)===m);if(!inM.length)return;
+  const bf=reps.filter(q=>q.date<m+"-01"),a0=bf.length?bf[bf.length-1].actual:0;
+  out[m]={v:num(inM[inM.length-1].actual-a0),src:"turunan"};});
+ return out}
+function analyze(p,r){
+ const dl=r.actual-r.plan,ds=stat(dl),sisaH=Math.round((D(p.fin)-D(r.date))/864e5),sp=Math.max(0,100-r.actual);
+ const mo=monthly(p,r),ks=Object.keys(mo).sort(),use=ks.slice(-3);
+ const avgM=use.length?use.reduce((a,m)=>a+mo[m].v,0)/use.length:0;
+ const trend=ks.length>1?mo[ks[ks.length-1]].v-mo[ks[ks.length-2]].v:0;
+ const sisaM=Math.max(sisaH,0)/MD,needM=sp<=0?0:sisaM>0?sp/sisaM:Infinity;
+ const ratio=sp<=0?0:avgM>0?needM/avgM:Infinity;
+ const fe=sp<=0?["SELESAI","ok"]:!use.length?["N/A","mu"]:ratio<=1?["LOGIS","ok"]:ratio<=1.25?["PERLU PERCEPATAN","wa"]:["WASPADA","kr"];
+ const rk={ok:0,wa:1,kr:2,mu:0},fin=rk[fe[1]]>rk[ds[1]]?[{kr:"KRITIS",wa:"WASPADA"}[fe[1]],fe[1]]:ds;
+ const projP=Math.min(100,r.actual+avgM*sisaM),daysNeed=avgM>0?sp/(avgM/MD):(sp>0?Infinity:0);
+ return{dl,ds,sisaH,sp,mo,ks,use,avgM,avgW:avgM*7/MD,trend,sisaM,needM,needW:needM*7/MD,ratio,fe,final:fin,projP,daysNeed,slip:daysNeed-sisaH}}
+function prod(p,r,A){
+ const el=$("#prod");
+ if(!A.use.length){el.innerHTML="<div class='note'>Belum ada data progress bulanan. Isi lewat Input Update (Bulan | Progress %).</div>";return}
+ const sd=d=>d.toLocaleDateString("id-ID",{day:"numeric",month:"short"});
+ const items=A.use.map(m=>({lab:mlab(m),per:mlab(m),v:A.mo[m].v,w:A.mo[m].v*7/dim(m),tag:A.mo[m].src==="input"?"aktual":"turunan",fut:false}));
+ const ud=D(r.date),fn=D(p.fin),nd=isFinite(A.needM)?A.needM:0;let cum=r.actual;
+ for(let i=1;i<=3;i++){
+  const s0=add(ud,Math.round(MD*(i-1))),e0=add(ud,Math.round(MD*i)),len=(e0-s0)/864e5,fr=Math.max(0,Math.min(1,(fn-s0)/(e0-s0)));
+  if(fr<=0)break;
+  const v=Math.max(0,Math.min(A.avgM*fr,100-cum));cum+=v;
+  items.push({lab:"+"+i+" bln",sub:sd(e0),per:"s/d "+sd(e0),v,w:v*7/(len*fr),tag:"proyeksi",fut:true});
+ }
+ const W=520,H=235,l=34,t=18,b=34,rr=8,iw=W-l-rr,ih=H-t-b,n=items.length;
+ const mx=Math.max(1,nd,A.avgM,...items.map(o=>o.v))*1.25,y=v=>t+ih*(1-v/mx),bw=Math.min(40,iw/n*.6);
+ let g="";[0,.5,1].forEach(f=>{const v=mx*f;g+=`<line x1="${l}" x2="${W-rr}" y1="${y(v)}" y2="${y(v)}" stroke="var(--bd)" stroke-dasharray="3 5"/><text x="${l-5}" y="${y(v)+3}" text-anchor="end">${v.toFixed(1)}</text>`});
+ const bars=items.map((o,i)=>{const cx=l+iw/n*(i+.5),st=o.fut?'fill-opacity=".16" stroke="var(--ac)" stroke-dasharray="4 3"':`opacity="${o.tag==="aktual"?.9:.5}"`;
+  return`<rect x="${cx-bw/2}" y="${y(o.v)}" width="${bw}" height="${Math.max(0,y(0)-y(o.v))}" rx="9" fill="var(--ac)" ${st}/><text x="${cx}" y="${y(o.v)-5}" text-anchor="middle" style="fill:var(--tx)">${pf(o.v)}%</text><text x="${cx}" y="${H-19}" text-anchor="middle">${o.lab}</text>${o.sub?`<text x="${cx}" y="${H-7}" text-anchor="middle" style="font-size:9px">${o.sub}</text>`:""}`}).join("");
+ const dv=l+iw/n*A.use.length,div=n>A.use.length?`<line x1="${dv}" x2="${dv}" y1="${t}" y2="${y(0)}" stroke="var(--mu)" stroke-opacity=".5" stroke-dasharray="2 4"/><text x="${dv}" y="${t-5}" text-anchor="middle">update</text>`:"";
+ const ln=(v,col,lab,an,x)=>v>0?`<line x1="${l}" x2="${W-rr}" y1="${y(v)}" y2="${y(v)}" stroke="var(--${col})" stroke-width="2" stroke-dasharray="7 5"/><text x="${x}" y="${y(v)-4}" text-anchor="${an}" style="fill:var(--${col})">${lab} ${v.toFixed(1)}%</text>`:"";
+ const trs=items.map(o=>`<tr><td>${o.per}</td><td>${pf(o.v)}%</td><td>${o.w.toFixed(2)}%</td><td><span class="tag">${o.tag}</span></td></tr>`).join("");
+ const slip=Math.round(A.slip),est=isFinite(A.daysNeed)?fmt(iso(add(ud,Math.round(A.daysNeed)))):"—";
+ const vd={"LOGIS":"Sisa pekerjaan masih masuk akal dikejar dengan produktivitas saat ini.","PERLU PERCEPATAN":`Perlu menaikkan produktivitas sekitar <b>${((A.ratio-1)*100).toFixed(0)}%</b> dari rata-rata agar selesai tepat waktu.`,"WASPADA":`Kebutuhan produktivitas <b>${f2(A.ratio)}×</b> rata-rata. Perlu percepatan besar (tambahan sumber daya/shift) atau evaluasi jadwal.`,"SELESAI":"Progress sudah 100%.","N/A":"Belum ada data bulanan untuk menilai kelayakan."}[A.fe[0]];
+ el.innerHTML=`<div class="pg"><div><svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block">${g}${bars}${div}${ln(A.avgM,"ac","Rata-rata","start",l+4)}${ln(nd,A.fe[1],"Dibutuhkan","end",W-rr)}</svg><div style="font-size:11px;color:var(--mu);margin-top:4px">Kiri: 3 bulan terakhir (aktual) · Kanan: 3 bulan ke depan (proyeksi pada kecepatan rata-rata, batang putus-putus)</div></div>
+ <div><table class="tb"><tr><th>Periode</th><th>Progress</th><th>Prorata/mgg</th><th></th></tr>${trs}</table>
+ <div class="note">Rata-rata ${A.use.length} bulan terakhir: <b>${f2(A.avgM)}%/bulan</b> (≈ ${f2(A.avgW)}%/minggu). Tren ${A.trend>=0?"naik":"turun"} <b>${Math.abs(A.trend).toFixed(1)}%</b> dari bulan sebelumnya.<br>Sisa progress <b>${A.sp.toFixed(1)}%</b> dalam <b>${A.sisaH} hari</b> (${A.sisaM.toFixed(1)} bulan) → butuh <b>${f2(A.needM)}%/bulan</b> (≈ ${f2(A.needW)}%/minggu).<br>Proyeksi progress 3 bulan ke depan: <b>${cum.toFixed(1)}%</b> · saat tanggal akhir kontrak: <b>${A.projP.toFixed(1)}%</b>. Estimasi selesai: <b>${est}</b>${isFinite(A.daysNeed)&&A.sp>0?` (${slip>0?"terlambat "+slip+" hari":"lebih cepat "+(-slip)+" hari"})`:""}.<br><b style="color:var(--${A.fe[1]})">${A.fe[0]}</b> — ${vd}</div></div></div>`}
+function chart(p,r,c){
+ const W=600,H=250,l=36,rr=12,t=12,b=28,iw=W-l-rr,ih=H-t-b,s=D(p.start),f=D(p.fin);
+ const x=dt=>l+Math.min(1,Math.max(0,(D(dt)-s)/(f-s)))*iw,y=v=>t+ih*(1-v/100);
+ const rs=p.rep.filter(q=>q.date<=r.date),pts=k=>rs.map(q=>x(q.date).toFixed(1)+","+y(q[k]).toFixed(1));
+ let g="";for(let v=0;v<=100;v+=25)g+=`<line x1="${l}" x2="${W-rr}" y1="${y(v)}" y2="${y(v)}" stroke="var(--bd)" stroke-dasharray="3 5"/><text x="${l-6}" y="${y(v)+3}" text-anchor="end">${v}%</text>`;
+ const xs=[p.start,iso(new Date((s.getTime()+f.getTime())/2)),p.fin].map((d,i)=>`<text x="${[l,l+iw/2,W-rr][i]}" y="${H-8}" text-anchor="${["start","middle","end"][i]}">${fmt(d)}</text>`).join("");
+ const ap=pts("actual"),pp=pts("plan"),ex=x(r.date),la=y(r.actual),lp=y(r.plan);
+ $("#chart").innerHTML=`<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block"><defs><linearGradient id="gA" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="var(--${c})" stop-opacity=".28"/><stop offset="1" stop-color="var(--${c})" stop-opacity="0"/></linearGradient></defs>${g}${xs}
+ <polygon points="${l},${y(0)} ${ap.join(" ")} ${ex},${y(0)}" fill="url(#gA)"/>
+ <polyline points="${pp.join(" ")}" fill="none" stroke="var(--ac)" stroke-width="2.5" stroke-dasharray="6 5" stroke-linecap="round"/>
+ <polyline points="${ap.join(" ")}" fill="none" stroke="var(--${c})" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/>
+ <line x1="${ex}" x2="${ex}" y1="${t}" y2="${y(0)}" stroke="var(--mu)" stroke-opacity=".4" stroke-dasharray="2 4"/>
+ <circle cx="${ex}" cy="${lp}" r="5" fill="var(--ac)"/><circle cx="${ex}" cy="${la}" r="6" fill="var(--${c})" stroke="#fff" stroke-width="2"/>
+ <g transform="translate(${l+10},${t+4})"><line x1="0" x2="22" y1="6" y2="6" stroke="var(--ac)" stroke-width="2.5" stroke-dasharray="6 4"/><text x="28" y="9">Rencana</text><line x1="86" x2="108" y1="6" y2="6" stroke="var(--${c})" stroke-width="3"/><text x="114" y="9">Aktual</text></g></svg>`;
+}
+$("#pj").onchange=e=>{cur=e.target.value;curD=null;render()};
+$("#wk").onchange=e=>{curD=e.target.value;render()};
+$("#strip").onclick=e=>{const c=e.target.closest(".chip");if(c){cur=c.dataset.id;curD=null;render()}};
+$("#bTheme").onclick=()=>{const e=document.documentElement,dk=e.dataset.theme?e.dataset.theme==="dark":matchMedia("(prefers-color-scheme:dark)").matches;e.dataset.theme=dk?"light":"dark"};
+// input
+const KAT={"Faktor Internal":["Pengadaan Material & Alat Procurement","Subkon / Mandor (Kontrak)","Pengadaan Alat Ringan / Alat Bantu","Pembayaran ke Vendor"],
+"Faktor Owner":["Keputusan Desain","Approval Shop Drawing / Metode","Approval Material","Permintaan Owner","Serah Terima Lahan / IMB","Pembayaran dari Owner"],
+"Faktor Eksternal":["Keterbatasan Resource Subkon / Mandor","Keterbatasan Supply Material","Pembatasan Waktu & Operasi Kerja","Vendor Lokal Tidak Qualified","Pekerjaan Sebelumnya Belum Selesai","Cuaca / Bencana Alam"]};
+const MONM={jan:1,feb:2,mar:3,apr:4,mei:5,may:5,jun:6,jul:7,agu:8,ags:8,aug:8,sep:9,okt:10,oct:10,nov:11,des:12,dec:12};
+const r2=v=>Math.round(v*100)/100,dmy=i=>i?i.slice(8,10)+"-"+i.slice(5,7)+"-"+i.slice(0,4):"";
+const nv=v=>{const m=String(v).replace(/−/g,"-").match(/-?\d+(?:[.,]\d+)?/);return m?+m[0].replace(",","."):NaN};
+const nz=v=>v===undefined||v===""?0:nv(v);
+function pdt(v){
+ v=String(v||"").trim().replace(/^[A-Za-z]{3,9},?\s+(?=\d)/,"");let m,y,mo,d;
+ if(m=v.match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/)){y=+m[1];mo=+m[2];d=+m[3]}
+ else if(m=v.match(/^(\d{1,2})[\/\-.](\d{1,2})[\/\-.](\d{2,4})$/)){d=+m[1];mo=+m[2];y=+m[3];if(y<100)y+=2000}
+ else if(m=v.match(/^(\d{1,2})\s+([A-Za-z]{3,})\w*\s+(\d{2,4})$/)){d=+m[1];mo=MONM[m[2].slice(0,3).toLowerCase()];y=+m[3];if(y<100)y+=2000}
+ else return null;
+ const t=new Date(y,mo-1,d);return mo&&t.getMonth()===mo-1&&t.getDate()===d?iso(t):null}
+const rows=t=>t.split("\n").map(x=>x.split(/\t|\|/).map(y=>y.trim())).filter(a=>a[0]);
+function parseCrit(txt,errs){return rows(txt).map((a,i)=>{const s=pdt(a[1]),e=pdt(a[2]),fl=nz(a[3]),pr=nz(a[4]);
+ if(!s||!e||isNaN(fl)||isNaN(pr)){errs.push("Lintasan kritis baris "+(i+1)+" ("+a[0]+"): tanggal atau angka tidak valid");return null}
+ return[a[0],s,e,fl,Math.max(0,Math.min(100,pr))]}).filter(Boolean)}
+function parseMon(txt,errs){const o={};rows(txt).forEach((a,i)=>{let m=a[0];const q=m.match(/^(\d{1,2})[\/\-](\d{4})$/);if(q)m=q[2]+"-"+p2(q[1]);const v=nv(a[1]);
+ if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(m)||isNaN(v)){errs.push("Progress bulanan baris "+(i+1)+": gunakan format YYYY-MM | angka");return}o[m]=v});return o}
+const dOpts=sel=>[...Array(30)].map((_,i)=>i+1).concat(31).map(v=>`<option value="${v}" ${v==sel?"selected":""}>${v>30?">30":v}</option>`).join("");
+function issRow(it){
+ const ks=Object.keys(KAT),k=it&&KAT[it[0]]?it[0]:ks[0],kd=it?it[1]:"",ket=it?it[2]:"",dp=it?Math.min(31,Math.max(1,+it[3]||1)):1;
+ const div=document.createElement("div");div.className="ik";
+ div.innerHTML=`<div class="ir"><select class="ik-k">${ks.map(c=>`<option ${c===k?"selected":""}>${esc(c)}</option>`).join("")}</select><select class="ik-d"></select><select class="ik-i" title="Dampak (hari kalender)">${dOpts(dp)}</select><button type="button" class="ik-x" title="Hapus kendala">×</button></div><input class="ik-t" placeholder="Keterangan singkat (opsional)" value="${esc(ket||"")}">`;
+ const fd=(cat,val)=>{const L=[...KAT[cat]];if(val&&!L.includes(val))L.unshift(val);div.querySelector(".ik-d").innerHTML=L.map(x=>`<option ${x===val?"selected":""}>${esc(x)}</option>`).join("")};
+ fd(k,kd||KAT[k][0]);
+ div.querySelector(".ik-k").onchange=e=>fd(e.target.value,"");
+ div.querySelector(".ik-x").onclick=()=>div.remove();
+ return div}
+const getIss=()=>[...document.querySelectorAll("#fIss .ik")].map(d=>[d.querySelector(".ik-k").value,d.querySelector(".ik-d").value,d.querySelector(".ik-t").value.trim(),+d.querySelector(".ik-i").value]);
+let editId=null,editDate=null;
+const lastMon=d=>iso(add(d,-((d.getDay()+6)%7)));
+function openM(mode){
+ const p=proj(),set=(id,v)=>{$(id).value=v};let r,dt;editId=null;editDate=null;$("#fIss").innerHTML="";
+ if(mode==="proj"){["#fN","#fP","#fM","#fS","#fF","#fPl","#fAc","#fC","#fMo"].forEach(i=>set(i,""));dt=lastMon(new Date())}
+ else{
+  editId=p.id;set("#fN",p.name);set("#fP",p.pic);set("#fM",p.mgr);set("#fS",p.start);set("#fF",p.fin);
+  if(mode==="edit"){r=p.rep.find(x=>x.date===curD)||lastRep(p);editDate=r.date;dt=r.date;set("#fPl",r.plan);set("#fAc",r.actual)}
+  else{r=lastRep(p);dt=iso(add(D(r.date),7));set("#fPl","");set("#fAc","")}
+  set("#fC",(r.crit||[]).map(x=>[x[0],dmy(x[1]),dmy(x[2]),x[3],x[4]].join(" | ")).join("\n"));
+  (r.iss||[]).forEach(x=>$("#fIss").appendChild(issRow(x)));
+  set("#fMo",Object.entries(p.monthly||{}).sort().map(([m,v])=>m+" | "+v).join("\n"));
+ }
+ set("#fD",dt);
+ $("#mt").textContent={edit:"Edit Update · "+fmt(dt),new:"Update Mingguan Baru",proj:"Proyek Baru"}[mode];
+ $("#ov").classList.add("on")}
+$("#bEdit").onclick=()=>openM("edit");$("#bNewW").onclick=()=>openM("new");$("#bNew").onclick=()=>openM("proj");
+$("#bX").onclick=()=>$("#ov").classList.remove("on");
+$("#bAddI").onclick=()=>$("#fIss").appendChild(issRow(null));
+$("#bSave").onclick=()=>{
+ const errs=[],name=$("#fN").value.trim(),dt=$("#fD").value,s=$("#fS").value,f=$("#fF").value;
+ if(!name||!dt||!s||!f)errs.push("Lengkapi nama proyek, tanggal mulai, tanggal selesai, dan tanggal update.");
+ else if(f<=s)errs.push("Tanggal selesai harus setelah tanggal mulai.");
+ const pl=nv($("#fPl").value),ac=nv($("#fAc").value);
+ if(isNaN(pl)||isNaN(ac)||pl<0||pl>100||ac<0||ac>100)errs.push("Progress rencana dan aktual harus berupa angka 0–100.");
+ const crit=parseCrit($("#fC").value,errs),mon=parseMon($("#fMo").value,errs),iss=getIss();
+ if(errs.length){alert(errs.join("\n"));return}
+ let p=P.find(x=>x.id===editId);
+ if(p&&p.rep.some(q=>q.date===dt&&q.date!==editDate)&&!confirm("Update tanggal "+fmt(dt)+" sudah ada. Timpa?"))return;
+ if(!p){p={id:"P"+Date.now(),rep:[]};P.push(p)}
+ Object.assign(p,{name,pic:$("#fP").value.trim(),mgr:$("#fM").value.trim(),start:s,fin:f,monthly:mon});
+ p.rep=p.rep.filter(q=>q.date!==dt&&q.date!==editDate);
+ p.rep.push({date:dt,plan:r2(pl),actual:r2(ac),crit,iss});
+ cur=p.id;curD=dt;save();render();$("#ov").classList.remove("on")};
+$("#bDel").onclick=()=>{const p=proj();if(P.length>1&&confirm("Hapus proyek "+p.name+"?")){P=P.filter(x=>x.id!==p.id);cur=P[0].id;curD=null;save();render();$("#ov").classList.remove("on")}else if(P.length<2)alert("Minimal harus ada satu proyek.")};
+$("#bExp").onclick=()=>{const a=document.createElement("a");a.href="data:application/json;charset=utf-8,"+encodeURIComponent(JSON.stringify(P));a.download="dashboard-schedule-"+iso(new Date())+".json";a.click()};
+$("#bImp").onclick=()=>$("#fileIn").click();
+$("#fileIn").onchange=e=>{const f=e.target.files[0];if(!f)return;const rd=new FileReader();rd.onload=()=>{try{const d=JSON.parse(rd.result);if(Array.isArray(d)&&d.length){P=d;cur=P[0].id;curD=null;save();render();$("#ov").classList.remove("on")}else alert("Format tidak valid.")}catch(x){alert("File tidak dapat dibaca.")}};rd.readAsText(f)};
+render();
+</script></body></html>
